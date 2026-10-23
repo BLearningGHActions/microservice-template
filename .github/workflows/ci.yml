@@ -10,4 +10,15 @@ jobs:
     uses: BLearningGHActions/microservice-workflow/.github/workflows/microservices-ci.yaml@main
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
-  
+
+  compile_stats:
+    runs-on: ubuntu-latest
+    name: Repository statistics
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: BLearningGHActions/composite-action@v1
+        id: stats_results
+        with:
+          from-date: '2024-01-01'
+            
