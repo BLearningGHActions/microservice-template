@@ -1,0 +1,23 @@
+name: Comment on issues
+
+on: 
+  issues:
+    types: [opened]
+
+permissions: 
+  issues: write
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: BLearningGHActions/create-or-update-comment@main
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            This is a multi-line test comment
+            - With GitHub **Markdown** :sparkles:
+            - Created by [create-or-update-comment][1]
+
+            [1]: https://github.com/BLearningGHActions/create-or-update-comment
+          reactions: '+1'
