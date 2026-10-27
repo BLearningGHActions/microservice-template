@@ -1,0 +1,37 @@
+name: "Continuous Integration - Cached"
+
+on: 
+  push:
+  pull_request:
+  workflow_dispatch: 
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: false
+          
+      - name: Fetch go catche paths
+        id: get-go-cache-paths
+        run: |
+          echo "go-mod = $( go env GOMODCACHE)" >> "$GITHUB_OUTPUT"
+
+      - name:  Cache modules cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.get-go-cache-paths.outputs.go-mod }}
+          key: go-mods-${{ hashFiles('**/go.sum') }}
+
+      - name: Install dependencies
+        run: make setup
+
+      - name: Test
+        run: make test
+        
+          
